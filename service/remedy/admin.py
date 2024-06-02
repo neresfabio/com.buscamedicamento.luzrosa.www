@@ -1,9 +1,5 @@
 from django.contrib import admin
-from .models import RemedyOrder
+from .models import ExternalRemedyData, LocationUser
 
-
-@admin.register(RemedyOrder)
-class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'manufacturer', 'value')
-    search_fields = ('name',)
-
+admin.site.register(ExternalRemedyData)
+admin.site.register(LocationUser)

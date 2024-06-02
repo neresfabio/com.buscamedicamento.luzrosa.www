@@ -1,23 +1,21 @@
 from django.db import models
-from uuid import uuid4
-import hashlib
+from uuid import uuid4    
 
-
-
-
-def upload_image(instance, filename):
-    hash_instance = hashlib.sha256(str(instance.id).encode())
-    hashed_filename = hash_instance.hexdigest() + '-' + filename
-    return hashed_filename
-
-# Create your models here.
-class RemedyOrder(models.Model):
+class LocationUser(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    manufacturer = models.CharField(max_length=150)
-    value = models.FloatField()
-    image = models.ImageField(upload_to=upload_image, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name.upper()
+        return f"{self.city.upper()} + {self.region.upper()}"
+
+class ExternalRemedyData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    title = models.CharField(max_length=200)
+    snippet = models.TextField()
+    link = models.URLField()
+    image = models.CharField(max_length=355)
+    location = models.ForeignKey(LocationUser, on_delete=models.PROTECT, related_name='locations')
+
+    def __str__(self):
+        return self.title
